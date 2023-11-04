@@ -21,7 +21,7 @@ module ActiveJob
       def delete_locks(wildcard)
         @servers.each do |server|
           synced_redis_connection(server) do |conn|
-            conn.scan('MATCH', wildcard).each { |key| conn.call('DEL', key) }
+            conn.scan_each(match: wildcard) { |key| conn.call('DEL', key) }
           end
         end
 
